@@ -68,7 +68,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                     style_path(source_path.display().to_string())
                 );
             }
-            let prepared_path = LocalChecker::prepare_local_project(&source_path, work_dir.as_deref()).await?;
+            let prepared_path =
+                LocalChecker::prepare_local_project(&source_path, work_dir.as_deref()).await?;
             if !json {
                 println!(
                     "{} {}\n",
@@ -118,12 +119,17 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                         ReachabilityStatus::AnalysisFailed => "⚠ ANALYSIS FAILED",
                         ReachabilityStatus::NoMetadata => "ℹ INFO",
                     };
-                    let partial = result.status == ReachabilityStatus::Reachable && !result.errors.is_empty();
+                    let partial =
+                        result.status == ReachabilityStatus::Reachable && !result.errors.is_empty();
                     println!(
                         "{}{}",
                         style_status(status_str),
                         if partial {
-                            format!(" {} {}", style_advisory(&result.advisory_id), style_hint("(partial - some functions failed to analyze)"))
+                            format!(
+                                " {} {}",
+                                style_advisory(&result.advisory_id),
+                                style_hint("(partial - some functions failed to analyze)")
+                            )
                         } else {
                             format!(" {}", style_advisory(&result.advisory_id))
                         }

@@ -121,7 +121,11 @@ impl ReachabilityAnalyzer {
         })
     }
 
-    async fn parse_callers_output(&self, output_dir: &PathBuf, errors: &mut Vec<String>) -> Result<Vec<String>> {
+    async fn parse_callers_output(
+        &self,
+        output_dir: &PathBuf,
+        errors: &mut Vec<String>,
+    ) -> Result<Vec<String>> {
         let mut chains = Vec::new();
 
         let mut entries = tokio::fs::read_dir(output_dir).await?;
@@ -177,10 +181,7 @@ impl ReachabilityAnalyzer {
                                 }
                             }
                         } else {
-                            errors.push(format!(
-                                "Unrecognized JSON format in {}",
-                                path.display()
-                            ));
+                            errors.push(format!("Unrecognized JSON format in {}", path.display()));
                         }
                     }
                 }

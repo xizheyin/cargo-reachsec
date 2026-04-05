@@ -1,4 +1,6 @@
-use crate::application::reachability_analyzer::{ReachabilityAnalyzer, ReachabilityResult, ReachabilityStatus};
+use crate::application::reachability_analyzer::{
+    ReachabilityAnalyzer, ReachabilityResult, ReachabilityStatus,
+};
 use anyhow::{Context, Result};
 use rustsec::{
     Database, Lockfile, Vulnerability, Warning, advisory::Informational, report::Report,
@@ -93,7 +95,10 @@ impl LocalChecker {
         Ok(results)
     }
 
-    pub async fn prepare_local_project(project_root: &Path, work_dir: Option<&Path>) -> Result<PathBuf> {
+    pub async fn prepare_local_project(
+        project_root: &Path,
+        work_dir: Option<&Path>,
+    ) -> Result<PathBuf> {
         let source_root = project_root.canonicalize().with_context(|| {
             format!(
                 "Failed to access project directory {}",
