@@ -148,9 +148,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                             "Analyzed {} function(s), no call paths found",
                             result.affected_functions.len()
                         )),
-                        ReachabilityStatus::AnalysisFailed => Some(
-                            "Reachability analysis failed (see errors below)".to_string(),
-                        ),
+                        ReachabilityStatus::AnalysisFailed => {
+                            Some("Reachability analysis failed (see errors below)".to_string())
+                        }
                         ReachabilityStatus::NoMetadata => Some(
                             "No function-level metadata in advisory, cannot analyze reachability"
                                 .to_string(),
