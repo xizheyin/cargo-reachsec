@@ -8,7 +8,7 @@ It combines two steps in a single `check` workflow:
 - try to recover call-path evidence to affected functions
 
 This project uses `callgraph4rs` as a git submodule for MIR-level call graph analysis.
-The submodule tracks the standalone repository at `git@github.com:xizheyin/callgraph4rs.git`.
+The submodule tracks the standalone repository at `https://github.com/xizheyin/callgraph4rs`.
 
 ## Quick Install
 
@@ -21,8 +21,8 @@ This installs both `reachsec` and `call-cg4rs` (requires cargo and rustup).
 ## Build from Source
 
 ```bash
-git clone --recurse-submodules https://github.com/xizheyin/rustsec-reachability
-cd rustsec-reachability
+git clone --recurse-submodules https://github.com/xizheyin/cargo-reachsec
+cd cargo-reachsec
 cargo build --release
 rustup toolchain install nightly
 cargo install --path callgraph4rs --force
@@ -41,43 +41,43 @@ git submodule update --init --recursive
 Check a local Rust project:
 
 ```bash
-cargo run --bin reachsec -- check --path /path/to/project
+reachsec check --path /path/to/project
 ```
 
 Check the current directory:
 
 ```bash
-cargo run --bin reachsec -- check --path .
+reachsec check --path .
 ```
 
 Show all call chains for each advisory:
 
 ```bash
-cargo run --bin reachsec -- check --path . --show-all-call-chains
+reachsec check --path . --show-all-call-chains
 ```
 
 Increase the per-advisory call-chain display limit:
 
 ```bash
-cargo run --bin reachsec -- check --path . --max-call-chains 10
+reachsec check --path . --max-call-chains 10
 ```
 
 Output results as JSON (useful for CI/CD integration):
 
 ```bash
-cargo run --bin reachsec -- check --path . --json
+reachsec check --path . --json
 ```
 
 Use a custom working directory for temporary files:
 
 ```bash
-cargo run --bin reachsec -- check --path . --work-dir /tmp/my-workdir
+reachsec check --path . --work-dir /tmp/my-workdir
 ```
 
 Keep the temporary directory after analysis (useful for debugging):
 
 ```bash
-cargo run --bin reachsec -- check --path . --keep-work-dir
+reachsec check --path . --keep-work-dir
 ```
 
 ## Example
@@ -95,7 +95,7 @@ curl -A "reachsec/0.1" -fL https://static.crates.io/crates/v_frame/v_frame-0.3.2
 tar -xzf v_frame-0.3.2.crate
 
 cd "$repo_root"
-./target/release/reachsec check --path "$tmpdir/v_frame-0.3.2"
+reachsec check --path "$tmpdir/v_frame-0.3.2"
 ```
 
 Example output:
