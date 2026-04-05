@@ -1,0 +1,28 @@
+[package]
+name = "reachsec"
+version = "0.1.0"
+edition = "2024"
+license = "MIT OR Apache-2.0"
+description = "RustSec vulnerability checker with function-level reachability analysis"
+repository = "https://github.com/xizheyin/cargo-reachsec"
+homepage = "https://github.com/xizheyin/cargo-reachsec"
+keywords = ["security", "vulnerability", "rustsec", "reachability", "audit"]
+categories = ["development-tools", "command-line-utilities"]
+
+[[bin]]
+name = "reachsec"
+path = "src/bin/reachsec.rs"
+
+[lib]
+name = "reachsec"
+path = "src/lib.rs"
+
+[dependencies]
+anyhow = "1.0"
+clap = { version = "4", features = ["derive"] }
+dotenv = "0.15"
+owo-colors = "4.2.0"
+rustsec = { version = "0.32", features = ["dependency-tree"] }
+serde_json = "1.0"
+tokio = { version = "1", features = ["full"] }
+which = "6"

@@ -1,0 +1,3 @@
+[submodule "callgraph4rs"]
+	path = callgraph4rs
+	url = git@github.com:xizheyin/callgraph4rs.git
