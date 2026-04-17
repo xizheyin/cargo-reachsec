@@ -134,31 +134,29 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                             format!(" {}", style_advisory(&result.advisory_id))
                         }
                     );
-                    println!(
-                        "  {} {} {}",
-                        style_field("Package:"),
-                        style_package(&result.package),
-                        style_version(&result.version)
-                    );
-                    println!("  {} {}", style_field("Title:"), result.title);
-                    println!("  {} {}", style_field("URL:"), result.url);
-                    let analysis_note = match result.status {
-                        ReachabilityStatus::Reachable => None,
-                        ReachabilityStatus::NotReachable => Some(format!(
-                            "Analyzed {} function(s), no call paths found",
-                            result.affected_functions.len()
-                        )),
-                        ReachabilityStatus::AnalysisFailed => {
-                            Some("Reachability analysis failed (see errors below)".to_string())
-                        }
-                        ReachabilityStatus::NoMetadata => Some(
-                            "No function-level metadata in advisory, cannot analyze reachability"
-                                .to_string(),
+                    let affected_summary = match result.status {
+                        ReachabilityStatus::Reachable => format!(
+                            "{} known function(s); {} call path(s) found",
+                            result.affected_functions.len(),
+                            result.call_chains.len()
                         ),
+                        ReachabilityStatus::NotReachable => format!(
+                            "{} known function(s); no call paths found",
+                            result.affected_functions.len()
+                        ),
+                        ReachabilityStatus::AnalysisFailed => format!(
+                            "{} known function(s); analysis failed",
+                            result.affected_functions.len()
+                        ),
+                        ReachabilityStatus::NoMetadata => {
+                            "No function-level metadata available".to_string()
+                        }
                     };
-                    if let Some(note) = analysis_note {
-                        println!("  {} {}", style_field("Analysis:"), style_hint(&note));
-                    }
+                    println!(
+                        "  {} {}",
+                        style_field("Affected:"),
+                        style_hint(&affected_summary)
+                    );
 
                     if !result.affected_functions.is_empty() {
                         println!("  {}", style_field("Affected functions:"));
@@ -189,21 +187,19 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                         }
                     }
 
+                    println!(
+                        "  {} {} {}",
+                        style_field("Package:"),
+                        style_package(&result.package),
+                        style_version(&result.version)
+                    );
+                    println!("  {} {}", style_field("Title:"), result.title);
+
                     if !result.errors.is_empty() {
-                        println!("  {}", style_field("Analysis errors:"));
+                        println!("  {}", style_field("Errors:"));
                         for err in &result.errors {
                             println!("    {}", style_hint(err));
                         }
-                    }
-
-                    if !result.description.is_empty() {
-                        let desc = result
-                            .description
-                            .lines()
-                            .take(3)
-                            .collect::<Vec<_>>()
-                            .join(" ");
-                        println!("  {} {}...", style_field("Description:"), desc);
                     }
                     println!();
                 }
